@@ -21,37 +21,36 @@ jmp $
 %include "gdt.asm"
 %include "switch_to_pm.asm"
 
-[ bits 16]
-load_kernel:
+[bits 16]
+load_kernel: ; load kernel from boot sectors 
 	mov bx, MSG_LOAD_KERNEL
 	call print_string
-
 	mov bx, KERNEL_OFFSET
-	mov dh, 30
-	mov dl, [BOOT_DRIVE]
+	mov dh, 30 ; boot sectors to read. 
+	mov dl, [BOOT_DRIVE] ; boot drive to read
+	
 	call disk_load
+	
 	ret
 
 [bits 32]
 BEGIN_PM:
-	mov ebx, MSG_PROT_MODE
-	call print_string_pm
-
+	;mov ebx, MSG_PROT_MODE
+	;call print_string_pm
 	call KERNEL_OFFSET
-
 	jmp $
 
 BOOT_DRIVE:
 	db 0
 
 MSG_REAL_MODE:
-	db " Started in 16- bit Real Mode ", 0
+	db "Started in 16- bit Real Mode ",10,13,0
 
 MSG_PROT_MODE:
-	db " Successfully landed in 32- bit Protected Mode ", 0
+	db "Successfully landed in 32- bit Protected Mode", 0
 
 MSG_LOAD_KERNEL:
-	db " Loading kernel into memory. ", 0
+	db "Loading kernel into memory...",13,10,0
 
 times 510-($-$$) db 0
-dw 0xaa55
+dw 0xAA55
