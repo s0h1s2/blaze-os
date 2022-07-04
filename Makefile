@@ -20,7 +20,6 @@ kernel.bin: $(KERNEL_ENTRY) $(OBJ)
 $(KERNEL_ENTRY): Boot/kernel_entry.asm
 	nasm -f elf $< -o $@
 
-
 clean:	
 	rm -rf *.bin *.o
 	rm -rf Kernel/*.o
