@@ -3,6 +3,7 @@ PREFIX="$HOME/opt/cross" # The binary files will install in here.
 TARGET=i686-elf # CPU target architecure.
 BINUTIL_VERSION="2.37"
 GCC_VERSION="9.5.0"
+
 mkdir -p ${PREFIX} # Create folder if doesn't exist.
 
 download_binutils(){
@@ -15,7 +16,6 @@ download_binutils(){
 make_binutils(){
 	# extract file 
 	file="binutils-${BINUTIL_VERSION}";
-	
 	mkdir -p build-binutils
 	cd build-binutils
 	../${file}/configure --prefix=$PREFIX  --target=$TARGET --with-sysroot --disable-nls --disable-werror
@@ -29,7 +29,6 @@ download_gcc(){
 	tar -xvf ${file};
 }
 make_gcc(){
-	# extract file 
 	file="gcc-${GCC_VERSION}";
 	mkdir -p build-gcc
 	cd build-gcc
