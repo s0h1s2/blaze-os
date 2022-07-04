@@ -10,6 +10,7 @@ run: os-image
 	qemu-system-x86_64 -fda $(BUILD_DIR)/os.bin
 os-image: boot_sect.bin kernel.bin
 	cat $^ > os.bin
+	mkdir -p $(BUILD_DIR)
 	mv *.o *.bin $(BUILD_DIR) 
 boot_sect.bin:
 	nasm -i Boot/ -f bin Boot/boot_sect.asm -o $@
