@@ -1,1 +1,6 @@
+/home/mrprogrammez/Desktop/projects/blaze-os/Drivers/io.c
+/home/mrprogrammez/Desktop/projects/blaze-os/Drivers/screen.c
+/home/mrprogrammez/Desktop/projects/blaze-os/Drivers/screen.h
+/home/mrprogrammez/Desktop/projects/blaze-os/Drivers/porting.h
+/home/mrprogrammez/Desktop/projects/blaze-os/Drivers/io.h
 /home/mrprogrammez/Desktop/projects/blaze-os/Kernel/kernel.c
