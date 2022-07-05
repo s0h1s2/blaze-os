@@ -1,4 +1,8 @@
 .codelite/
 blaze-os.workspace
 Build/
-
+.vscode/
+blaze-os.workspace
+.kdev4
+blaze-os.kdev4
+.ctagsd/
