@@ -5,8 +5,8 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 #define VIDEO_ADDRESS 0xb8000
-#define MAX_COLS 25
-#define MAX_ROWS 80
+#define MAX_COLS 80
+#define MAX_ROWS 25
 
 #define WHITE_ON_BLACK 0x0f
 
@@ -20,9 +20,8 @@
 
 void print(char *message);
 void printInt(int message);
-
-//void printf(char *format,...); // TODO: port printf like standard library of unix.
 void clearScreen();
-int getCursor();
+void vgaInit();
+
 
 #endif // SCREEN_H_INCLUDED

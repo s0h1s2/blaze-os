@@ -1,22 +1,9 @@
 #include "../Include/screen.h"
+#include "../Include/io.h"
 
 void main(){
     
     clearScreen();
-    //print("Hello,wordl!");
-    int cursor=123456789;
+    vgaInit(); // set offset to 0,0 position;
     
-    printInt(cursor);
-    
-    
-//     while(1);
 }
-/* 5 -->
- * 4 
- * 3
- * 2
- * 1 --> start here.
- * 
- * 
- * 
- */

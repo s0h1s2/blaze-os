@@ -18,7 +18,7 @@ boot_sect.bin:
 kernel.bin: $(KERNEL_ENTRY) $(OBJ)
 	i686-elf-ld -o kernel.bin -Ttext 0x1000 $^ --oformat binary
 %.o: %.c ${HEADERS}
-	i686-elf-gcc -ffreestanding -c $< -o $@
+	i686-elf-gcc -g -ffreestanding -c $< -o $@
 $(KERNEL_ENTRY): Boot/kernel_entry.asm
 	nasm -f elf $< -o $@
 
