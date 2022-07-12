@@ -5,6 +5,7 @@ KERNEL_ENTRY=kernel_entry.o
 BUILD_DIR=Build
 # Convert the *.c filenames to *.o to give a list of object files to build
 OBJ = $(C_SOURCES:.c=.o)
+ISR=isr.o
 
 all: os-image
 run: os-image
@@ -15,12 +16,15 @@ os-image: boot_sect.bin kernel.bin
 	mv *.o *.bin $(BUILD_DIR) 
 boot_sect.bin:
 	nasm -i Boot/ -f bin Boot/boot_sect.asm -o $@
-kernel.bin: $(KERNEL_ENTRY) $(OBJ)
+kernel.bin: $(KERNEL_ENTRY) $(ISR) $(OBJ)
 	i686-elf-ld -o kernel.bin -Ttext 0x1000 $^ --oformat binary
 %.o: %.c ${HEADERS}
 	i686-elf-gcc -g -ffreestanding -c $< -o $@
 $(KERNEL_ENTRY): Boot/kernel_entry.asm
 	nasm -f elf $< -o $@
+$(ISR): Boot/isr.asm
+	nasm -f elf $< -o $@
+
 
 clean:	
 	rm -rf *.bin *.o

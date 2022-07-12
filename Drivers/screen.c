@@ -1,10 +1,8 @@
 #include "../Include/screen.h"
 #include "../Include/io.h"
 #include <stdint.h>
-
-short *address=(short*)VIDEO_ADDRESS;
-
-typedef unsigned char byte;
+#include <stdarg.h>
+#include <stdbool.h>
 
 uint16_t getCursor();	
 void setCursor(uint16_t offset);
@@ -16,7 +14,66 @@ void setCharAtAddress(char character,int offset);
 void vgaInit(){
 	setCursor(getOffset(0, 0));
 }
+void printf(char *format, ...){
+	char buffer[512]; // TODO: Dynamic allocation when memory part finished.
 
+	signed short index=0;
+	va_list argList;
+	va_start(argList,format);
+
+	while (*format) {
+		// char *next=*(&format+1);
+		if (*format=='%' && *(format+1)=='i')
+		{
+			char tempBuffer[32];
+			unsigned char i=0;
+			bool isSigned=false;
+			int val=va_arg(argList,int);			
+				
+			if (val<0)
+			{
+				val=val*-1;
+				isSigned=true;
+
+
+			}
+
+			while (val!=0) {
+				*(tempBuffer+i)=val%10+'0';
+				val=val/10;
+				i++;
+			}
+			if (isSigned)
+			{
+				*(buffer+index)='-';
+				index++;
+
+			}
+			for (signed short j = i-1; j >=0; j--)
+			{
+
+				*(buffer+index)=*(tempBuffer+(j));
+				index++;
+
+			}
+			format+=2;
+			continue;
+
+		}
+		*(buffer+index)=*format;
+		
+		index++;
+
+		format++;
+
+	}
+	va_end(argList);
+	print(buffer);
+	memset(&buffer, 0, 512); 
+
+		
+
+}
 void print(char *message){
 	short *addr=(short *)VIDEO_ADDRESS;
 	uint16_t cursorPos=getCursor();
@@ -28,16 +85,19 @@ void print(char *message){
 			setCursor(moveOffsetToNewline(cursorPos));
 			cursorPos=getCursor();
 
-		}
-		if (*message>=0x20)
-		{
-			*(addr+cursorPos)=0x0f<<8|*message;
-		}
+		}else{
+			if (*message>=0x20)
+			{
+				*(addr+cursorPos)=0x0f<<8|*message;
+			}
+			cursorPos++;
 
+		}
 		message++;//move pointer to next charatcer;
-		cursorPos++;
+
+
 	}
-	
+	*(addr+cursorPos)=0x0f00;
 	setCursor(cursorPos);
 
 }
@@ -85,28 +145,3 @@ void setCharAtAddress(char character,int offset){
 	addr[offset]=character;
 	addr[offset+1]=0x0f;
 }
-
-
-// // TODO: danger code what if the buffer is full.
-// short printInt(short message){
-// 	byte allocSize=32;
-
-// 	byte buffer[allocSize];
-// 	byte index=0;
-// 	while(message>0){
-// 		char c=(message%10)+'0';
-// 		message=message/10;
-// 		buffer[index]=c;
-// 		index++;
-
-// 	}
-// 	// Reverse the values to get correct ones.
-// 	byte result[index];
-
-// 	for (byte i = 1; i<=index; i++)
-// 	{
-// 		*(result+(i-1))=*((byte *)(&buffer)+(index-i));
-
-// 	}	
-
-// }

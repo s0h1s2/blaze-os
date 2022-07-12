@@ -19,7 +19,8 @@
 #endif
 
 void print(char *message);
-void printInt(int message);
+void printf(char *format,...);
+
 void clearScreen();
 void vgaInit();
 

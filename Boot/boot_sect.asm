@@ -40,6 +40,7 @@ BEGIN_PM:
 	call KERNEL_OFFSET
 	jmp $
 
+
 BOOT_DRIVE:
 	db 0
 
