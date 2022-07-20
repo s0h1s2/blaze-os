@@ -26,7 +26,7 @@ load_kernel: ; load kernel from boot sectors
 	mov bx, MSG_LOAD_KERNEL
 	call print_string
 	mov bx, KERNEL_OFFSET
-	mov dh, 30 ; boot sectors to read. 
+	mov dh, 30 ; sectors to read. 
 	mov dl, [BOOT_DRIVE] ; boot drive to read
 	
 	call disk_load
@@ -38,6 +38,7 @@ BEGIN_PM:
 	;mov ebx, MSG_PROT_MODE
 	;call print_string_pm
 	call KERNEL_OFFSET
+
 	jmp $
 
 

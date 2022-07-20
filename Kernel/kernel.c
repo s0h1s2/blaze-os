@@ -1,12 +1,18 @@
 #include "../Include/screen.h"
 #include "../Include/io.h"
 #include "../Include/idt.h"
+#include "../Include/isr.h"
+#include "../Include/keyboard.h"
 
 void main(){
-    initIDT();        
-    clearScreen();
+
     vgaInit(); // set offset to 0,0 position;
-    printf("%i",1/0);
+    clearScreen();
+    initIDT();
+    asm volatile("sti");
+    initKeyboard();
+    
+    // printf("Install keyboard.");
 
 }
 

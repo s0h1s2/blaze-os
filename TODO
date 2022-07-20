@@ -1,4 +1,5 @@
-[] implement driver for graphic.
+[x] Implement driver for graphic.
+[] Support scrolling for video terminal.
 [] implement driver for keyboard.
 [] implement text editor software.
 [] support more than one architecture.

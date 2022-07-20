@@ -14,6 +14,14 @@
 		push byte %1
 		jmp isrCommonStub			
 %endmacro
+%macro IRQ 2
+  GLOBAL irq%1
+  irq%1:
+    push byte %1
+    push byte %2
+    jmp irqCommonStub
+%endmacro
+        
 ISR_NOERRCODE 0
 ISR_NOERRCODE 1
 ISR_NOERRCODE 2
@@ -47,10 +55,32 @@ ISR_NOERRCODE 29
 ISR_NOERRCODE 30
 ISR_NOERRCODE 31
 
+IRQ 0,32
+IRQ 1,33
+IRQ 2,34
+IRQ 3,35
+IRQ 4,36
+IRQ 5,37
+IRQ 6,38
+IRQ 7,39
+IRQ 8,40
+IRQ 9,41
+IRQ 10,42
+IRQ 11,43
+IRQ 12,44
+IRQ 13,45
+IRQ 14,46
+IRQ 15,47
+
+
+
+
+
+
 [GLOBAL idtFlush]
 idtFlush:
-	mov eax,[esp+4]
-	lidt [eax]
+	mov eax,[esp+4] ; basepointer +4 
+	lidt [eax] ; load intrreupt descriptor table.
 	ret
  
 [EXTERN isrHandler]
@@ -63,13 +93,37 @@ isrCommonStub:
 	mov es,ax
 	mov fs,ax
 	mov gs,ax
+	push esp
 	call isrHandler
 	pop eax
+	pop eax
+	
 	mov ds,ax
 	mov es,ax
 	mov fs,ax
 	mov gs,ax
 	popa 
 	add esp,8
-	sti
+
+	iret
+[EXTERN irqHandler]
+irqCommonStub:
+	pusha 
+	mov ax,ds 
+	push eax
+	mov ax,0x10
+	mov ds,ax
+	mov es,ax
+	mov fs,ax
+	mov gs,ax
+	push esp
+	call irqHandler
+	pop ebx
+	pop ebx
+	mov ds,bx
+	mov es,bx
+	mov fs,bx
+	mov gs,bx
+	popa 
+	add esp,8
 	iret

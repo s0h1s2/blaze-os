@@ -11,10 +11,9 @@ static void IDTSetGate(uint8_t,uint32_t,uint16_t,uint8_t);
 IDT_Entry IDT_Entries[256];
 IDT_Ptr IDT_P;
 void initIDT(){
-	
 	IDT_P.limit=sizeof(IDT_Entry)*256-1;
 	IDT_P.base=(uint32_t)&IDT_Entries;
-	memset(&IDT_Entries, 0, sizeof(IDT_Entry)*256);
+	memset(&IDT_Entries, 0, sizeof(IDT_Entry));
 	IDTSetGate(0,(uint32_t)isr0,0x08,0x8E);
 	IDTSetGate(1,(uint32_t)isr1,0x08,0x8E);
 	IDTSetGate(2,(uint32_t)isr2,0x08,0x8E);
@@ -47,11 +46,46 @@ void initIDT(){
 	IDTSetGate(29,(uint32_t)isr29,0x08,0x8E);
 	IDTSetGate(30,(uint32_t)isr30,0x08,0x8E);
 	IDTSetGate(31,(uint32_t)isr31,0x08,0x8E);
-
+	  // Remap interrupt request controller.
+	 // ICW1
+	 portByteOut(0x20, 0x11);
+	 portByteOut(0xA0, 0x11);
+	 // ICW2
+	 portByteOut(0x21, 0x20);
+	 portByteOut(0xA1, 0x28);
+	 // ICW3
+	 portByteOut(0x21, 0x04);
+	 portByteOut(0xA1, 0x02);
+	 // ICW4
+	 portByteOut(0x21, 0x01);
+	 portByteOut(0xA1, 0x01);
+	 
+	 // OCW1
+	 portByteOut(0x21, 0x0);
+	 portByteOut(0xA1, 0x0);
+	
+	IDTSetGate(32,(uint32_t)irq0,0x08,0x8E);
+	IDTSetGate(33,(uint32_t)irq1,0x08,0x8E);
+	IDTSetGate(34,(uint32_t)irq2,0x08,0x8E);
+	IDTSetGate(35,(uint32_t)irq3,0x08,0x8E);
+	IDTSetGate(36,(uint32_t)irq4,0x08,0x8E);
+	IDTSetGate(37,(uint32_t)irq5,0x08,0x8E);
+	IDTSetGate(38,(uint32_t)irq6,0x08,0x8E);
+	IDTSetGate(39,(uint32_t)irq7,0x08,0x8E);
+	IDTSetGate(40,(uint32_t)irq8,0x08,0x8E);
+	IDTSetGate(41,(uint32_t)irq9,0x08,0x8E);
+	IDTSetGate(42,(uint32_t)irq10,0x08,0x8E);
+	IDTSetGate(43,(uint32_t)irq11,0x08,0x8E);
+	IDTSetGate(44,(uint32_t)irq12,0x08,0x8E);
+	IDTSetGate(45,(uint32_t)irq13,0x08,0x8E);
+	IDTSetGate(46,(uint32_t)irq14,0x08,0x8E);
+	IDTSetGate(47,(uint32_t)irq15,0x08,0x8E);
+	
 	idtFlush((uint32_t)&IDT_P);
 
 }
 static void IDTSetGate(uint8_t num,uint32_t base,uint16_t sel,uint8_t flags){
+
 	IDT_Entries[num].baseLo=base&0xFFFF;
 	IDT_Entries[num].baseHi=(base>>16)&0xFFFF;
 	IDT_Entries[num].always0=0;

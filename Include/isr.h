@@ -6,3 +6,7 @@ typedef struct {
 	uint32_t eip,eflags,useresp,ss;
 	
 } registers_t;
+
+typedef void (*isr_t)(registers_t *reg);
+
+void registerInterruptHandler(uint8_t n,isr_t handler);

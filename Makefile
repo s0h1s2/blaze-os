@@ -9,7 +9,7 @@ ISR=isr.o
 
 all: os-image
 run: os-image
-	qemu-system-x86_64 -fda $(BUILD_DIR)/os.bin
+	qemu-system-x86_64 -serial file:serial.log -fda $(BUILD_DIR)/os.bin
 os-image: boot_sect.bin kernel.bin
 	cat $^ > os.bin
 	mkdir -p $(BUILD_DIR)
@@ -19,7 +19,7 @@ boot_sect.bin:
 kernel.bin: $(KERNEL_ENTRY) $(ISR) $(OBJ)
 	i686-elf-ld -o kernel.bin -Ttext 0x1000 $^ --oformat binary
 %.o: %.c ${HEADERS}
-	i686-elf-gcc -g -ffreestanding -c $< -o $@
+	i686-elf-gcc -g -ffreestanding -Wall -nostdlib -c $< -o $@
 $(KERNEL_ENTRY): Boot/kernel_entry.asm
 	nasm -f elf $< -o $@
 $(ISR): Boot/isr.asm

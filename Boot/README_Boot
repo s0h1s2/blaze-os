@@ -1,2 +1,2 @@
 # Bootloader 
-Bootloader load kernel into memory then start executing it. When computer start booting this bootloader start at 16bit real mode then switch to 32 bit protected mode.
+Bootloader load kernel into memory then start executing it. When computer start booting this bootloader start at 16 bit real mode then switch to 32 bit protected mode.
